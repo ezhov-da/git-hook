@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# https://habr.com/ru/post/511608/
+
+#   ${array[*]} # Все записи в массиве
+#   ${!array[*]}# Все индексы в массиве
+#   ${#array[*]}# Количество записей в массиве
+#   ${#array[0]}# Длина первой записи (нумерация с нуля)
+
+echo $0
+
+array=(
+	реализован
+	откорректирован
+	устранен
+	добавлен
+	added
+	fixed
+	edited
+	initialized
+	created
+)
+
+find=0
+
+for item in ${array[*]}; do
+	if [[ -n $(grep $item "$1") ]]; then find=1; fi 
+done
+
+if [[ $find == "0" ]]; then 
+	echo "Commit message"
+	echo "--------------"
+	echo $(cat $1)	
+	echo "--------------"
+	echo "not contains required words: ${array[*]}."
+	echo "Please, review words in '$0' file."  
+	exit 1
+fi 
